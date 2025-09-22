@@ -30,13 +30,15 @@ function MyCatches() {
   }, [])
 
   return (
-    <Container fluid px="sm">
-      <Title order={2} mb="md">
+    <Container size="lg" mx="auto" px="sm">
+      <Title order={2} mb="md" ta="center">
         My Catches
       </Title>
-      <Stack gap="md">
+      <Stack gap="xl" align="center">
         {catches.map((c, i) => (
-          <CatchCard key={i} {...c} />
+          <div key={i} style={{ width: '100%', maxWidth: 720 }}>
+            <CatchCard {...c} />
+          </div>
         ))}
       </Stack>
       {loading && <Text>Loading...</Text>}
