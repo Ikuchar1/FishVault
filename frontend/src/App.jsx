@@ -6,6 +6,8 @@ import Profile from './pages/Profile.jsx'
 import AddCatch from './pages/AddCatch.jsx'
 import MyCatches from './pages/MyCatches.jsx'
 import { AppShell, Text } from '@mantine/core'
+import Login from './pages/Login.jsx'
+import Register from './pages/Register.jsx'
 
 export default function App() {
 
@@ -19,6 +21,8 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/addcatch" element={<AddCatch />} />
           <Route path="/mycatches" element={<MyCatches />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </AppShell.Main>
     </AppShell>

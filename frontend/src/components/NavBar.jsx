@@ -1,13 +1,15 @@
-import { AppShell, Group, Text, Avatar, Menu, Tabs, Container, Burger, UnstyledButton } from '@mantine/core'
+import { AppShell, Group, Text, Avatar, Menu, Tabs, Container, Burger, UnstyledButton, Button } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconChevronDown, IconLogout, IconSettings } from '@tabler/icons-react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../auth/useAuth'
 import { TABS, routeToTab } from './navTabs'
 
 export default function NavBar() {
     const location = useLocation()
     const navigate = useNavigate()
     const [opened, { toggle, close }] = useDisclosure(false)
+    const { user, logout } = useAuth()
 
     const active = routeToTab(location.pathname)
 
@@ -41,26 +43,30 @@ export default function NavBar() {
                         </Tabs.List>
                     </Tabs>
 
-                    {/* Right: Profile menu */}
-                    <Menu position="bottom-end" withinPortal>
-                        <Menu.Target>
-                            <UnstyledButton>
-                                <Group gap={8} wrap="nowrap">
-                                    <Avatar src="https://i.pravatar.cc/100?img=11" radius="xl" size={40} />
-                                    <Text size="sm" fw={500}>Ian Kuchar</Text>
-                                    <IconChevronDown size={14} />
-                                </Group>
-                            </UnstyledButton>
-                        </Menu.Target>
-                        <Menu.Dropdown>
-                            <Menu.Item leftSection={<IconSettings size={16} />} component={Link} to="/profile">
-                                Account settings
-                            </Menu.Item>
-                            <Menu.Item leftSection={<IconLogout size={16} />} onClick={() => console.log('logout')}>
-                                Logout
-                            </Menu.Item>
-                        </Menu.Dropdown>
-                    </Menu>
+                    {/* Right: Auth controls */}
+                    {user ? (
+                        <Menu position="bottom-end" withinPortal>
+                            <Menu.Target>
+                                <UnstyledButton>
+                                    <Group gap={8} wrap="nowrap">
+                                        <Avatar src={`https://i.pravatar.cc/100?u=${user.email || user.id}`} radius="xl" size={40} />
+                                        <Text size="sm" fw={500}>{user.name || user.email}</Text>
+                                        <IconChevronDown size={14} />
+                                    </Group>
+                                </UnstyledButton>
+                            </Menu.Target>
+                            <Menu.Dropdown>
+                                <Menu.Item leftSection={<IconSettings size={16} />} component={Link} to="/profile">
+                                    Account settings
+                                </Menu.Item>
+                                <Menu.Item leftSection={<IconLogout size={16} />} onClick={() => { logout(); navigate('/login') }}>
+                                    Logout
+                                </Menu.Item>
+                            </Menu.Dropdown>
+                        </Menu>
+                    ) : (
+                        <Button variant="light" onClick={() => navigate('/login')}>Login</Button>
+                    )}
                 </Group>
             </Container>
 

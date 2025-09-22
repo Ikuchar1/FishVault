@@ -2,17 +2,27 @@ import { Container, Title, Stack, Text } from '@mantine/core'
 import CatchCard from '../components/CatchCard.jsx'
 import { useEffect, useState } from 'react'
 import api from '../api'
+import { useAuth } from '../auth/useAuth'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 function MyCatches() {
   const [catches, setCatches] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const { user } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
     let active = true
+    if (!user) {
+      // redirect to login and remember where we came from
+      navigate('/login', { state: { from: location.pathname } })
+      return () => { active = false }
+    }
     setLoading(true)
     api
-      .get('/api/catch')
+      .get(`/api/catch/user/${user.id}`)
       .then((res) => {
         if (!active) return
         setCatches(Array.isArray(res.data) ? res.data : [])
@@ -27,7 +37,7 @@ function MyCatches() {
     return () => {
       active = false
     }
-  }, [])
+  }, [user, navigate, location])
 
   return (
     <Container size="lg" mx="auto" px="sm">
