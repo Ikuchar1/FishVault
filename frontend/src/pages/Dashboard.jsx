@@ -1,11 +1,13 @@
-import { Card, Text, Button, Group, Title, Stack } from '@mantine/core'
+import { Container, Title, Stack, Text } from '@mantine/core'
 
 function Dashboard() {
   return (
-    <div>
-      <Title order={2} mb="md">Dashboard</Title>
-      <Text>This will show the user's fishing statistics and recent catches</Text>
-    </div>
+    <Container size="lg" mx="auto" px="sm">
+      <Title order={2} mb="md" ta="left">Dashboard</Title>
+      <Stack>
+        <Text>This will show the user's fishing statistics and recent catches</Text>
+      </Stack>
+    </Container>
   )
 }
 
